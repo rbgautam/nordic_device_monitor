@@ -118,11 +118,36 @@ def write_to_firebase(project,collection,data,doc_id):
         # }
 
         # Add a new doc in collection 'cities' with ID 'LA'
-        firestore_db.collection(collection).document(doc_id).set(data)
+        firestore_db.collection(collection).document(doc_id).set(data, {merge: true})
         # Add new document with doc_id in collection
         # firestore_db.collection(collection).add(document_data=data,document_id=doc_id)
     except Exception as ex:
         print(ex)
+
+def upsert_to_firebase(project,collection,data,doc_id):
+    uid =  uuid.uuid4().urn
+    json_acct_info = cert_dict
+    try:
+        credentials = service_account.Credentials.from_service_account_info(
+        json_acct_info)
+
+        scoped_credentials = credentials.with_scopes(
+        ['https://www.googleapis.com/auth/cloud-platform'])
+
+        
+        firestore_db = firestore.Client(project=project, credentials=credentials)
+        doc_ref = firestore_db.collection(collection).document(doc_id)
+        doc = doc_ref.get()
+        if doc.exists:
+             doc_ref.update(data)
+        else:
+        # Add a new doc in collection 'cities' with ID 'LA'
+            firestore_db.collection(collection).document(doc_id).set(data)
+        # Add new document with doc_id in collection
+        # firestore_db.collection(collection).add(document_data=data,document_id=doc_id)
+    except Exception as ex:
+        print(ex)
+
 
 def implicit():
     from google.cloud import storage

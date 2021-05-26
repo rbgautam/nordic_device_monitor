@@ -9,7 +9,7 @@ import os
 import interval_timer 
 import requests as rs
 import json
-from firebase_connect import read_from_firebase,write_to_firebase
+from firebase_connect import read_from_firebase,write_to_firebase,upsert_to_firebase
 import time
 
 def get_nordic_accounts():
@@ -203,7 +203,7 @@ def save_device_status_firebase(deviceId,api_key,active):
                         'device': deviceId,
                         'ts':timestamp}
         doc_id = deviceId
-        write_to_firebase('jupiter-flutter','device_activity',upload_data,doc_id)            
+        upsert_to_firebase('jupiter-flutter','device_activity',upload_data,doc_id)            
         # print (timestamp)
     except Exception as ex:
         print(ex)
