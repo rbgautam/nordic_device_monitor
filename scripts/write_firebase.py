@@ -198,10 +198,12 @@ def save_device_status_firebase(deviceId,api_key,active):
                         'device': deviceId,
                         'last_active':timestamp,
                         'ts':timestamp}
+            send_sms()
         else:
             upload_data = { 'active':active,
                         'device': deviceId,
                         'ts':timestamp}
+        global doc_id
         doc_id = deviceId
         upsert_to_firebase('jupiter-flutter','device_activity',upload_data,doc_id)            
         # print (timestamp)
@@ -215,13 +217,13 @@ def send_sms():
         client = Client(account_sid, auth_token)
 
         message = client.messages.create(
-         body='Course open again \n https://ce.harpercollege.edu/public/category/programArea.do?method=load&selectedProgramAreaId=29362',
+         body='Device Activated : '+doc_id,
          from_=os.environ['TWILIO_FROM_NUMBER'],
          to=os.environ['TWILIO_TO_NUMBER1'])
-        message = client.messages.create(
-         body='Course open again \n https://ce.harpercollege.edu/public/category/programArea.do?method=load&selectedProgramAreaId=29362',
-         from_=os.environ['TWILIO_FROM_NUMBER'],
-         to=os.environ['TWILIO_TO_NUMBER2'])
+        # message = client.messages.create(
+        #  body='Course open again \n https://ce.harpercollege.edu/public/category/programArea.do?method=load&selectedProgramAreaId=29362',
+        #  from_=os.environ['TWILIO_FROM_NUMBER'],
+        #  to=os.environ['TWILIO_TO_NUMBER2'])
         print(message.sid)
     except Exception as ex:
         print(ex)
