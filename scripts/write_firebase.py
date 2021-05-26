@@ -193,7 +193,13 @@ def save_device_status_firebase(deviceId,api_key,active):
     try:
         # print('GPS Location entries:',device_data['total'])
         timestamp = time.time()
-        upload_data = { 'active':active,
+        if active:
+            upload_data = { 'active':active,
+                        'device': deviceId,
+                        'last_active':timestamp,
+                        'ts':timestamp}
+        else:
+            upload_data = { 'active':active,
                         'device': deviceId,
                         'ts':timestamp}
         doc_id = deviceId
