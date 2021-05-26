@@ -1,0 +1,1 @@
+worker: python scripts/write_firebase.py
