@@ -198,7 +198,7 @@ def save_device_status_firebase(deviceId,api_key,active):
                         'device': deviceId,
                         'last_active':timestamp,
                         'ts':timestamp}
-            send_sms()
+            # send_sms()
         else:
             upload_data = { 'active':active,
                         'device': deviceId,
